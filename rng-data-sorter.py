@@ -22,22 +22,40 @@ def timeArraySorting(array, sortType):
     start = time.perf_counter()
 
     if sortType == "selection":
-        selection_sort(array)
+        sorted_arr, comparisons = selection_sort(array)
     elif sortType == "merge":
-        merge_sort(array)
+        sorted_arr, comparisons = merge_sort(array)
     elif sortType == "quick":
-        quick_sort(array)
+        sorted_arr, comparisons = quick_sort(array)
 
     # end timer
     end = time.perf_counter()
+    # calculate time taken to sort array
+    timeTaken = end - start
+    # returning time in milliseconds
+    timeTaken = timeTaken * 1000
 
-    return end - start
+    return sorted_arr, comparisons, timeTaken
 
 
 for array in allArrays:
     print(f"Array size: {len(array)}")
 
-    print(f"Selection Sort took {timeArraySorting(array.copy(), 'selection')}s")
-    print(f"Merge Sort took {timeArraySorting(array.copy(), 'merge')}s")
-    print(f"Quick Sort took {timeArraySorting(array.copy(), 'quick')}s")
+    selection_sorted_arr, selection_comparisons, selection_timeTaken = timeArraySorting(
+        array.copy(), "selection"
+    )
+    print(
+        f"Selection Sort took {selection_timeTaken}ms, {selection_comparisons} comparisons"
+    )
+
+    merge_sorted_arr, merge_comparisons, merge_timeTaken = timeArraySorting(
+        array.copy(), "merge"
+    )
+    print(f"Merge Sort took {merge_timeTaken}ms, {merge_comparisons} comparisons")
+
+    quick_sorted_arr, quick_comparisons, quick_timeTaken = timeArraySorting(
+        array.copy(), "quick"
+    )
+    print(f"Quick Sort took {quick_timeTaken}ms, {quick_comparisons} comparisons")
+
     print("\n")
