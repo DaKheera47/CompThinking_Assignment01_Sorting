@@ -1,50 +1,56 @@
-# open "FirstNames.txt" and "LastNames.txt" and create a list of names
-# randomly shuffle the list and print the results
+# Author: Shaheer Sarfaraz, G21011528
+# Year 2, Computational Thinking, 11/2023
 
 import random
 
 MAX_NAMES = 4000
+# character to go between first and last name
+NAME_DELIMITER = " "
+FIRST_FILE_NAME = "First Names.txt"
+LAST_FILE_NAME = "lastNames.txt"
 
 # loading files into lists
-with open("First Names.txt") as f:
+with open(FIRST_FILE_NAME) as f:
     first_names = f.readlines()
-with open("lastNames.txt") as f:
+with open(LAST_FILE_NAME) as f:
     last_names = f.readlines()
 
-# print lengths of lists
-print("First Names: ", len(first_names))
-print("Last Names: ", len(last_names))
+# print number of names read
+print(f"Number of first names read: {len(first_names)}")
+print(f"Number of last names read: {len(last_names)}")
+
+# clip to MAX_NAMES in both lists
+first_names = first_names[:MAX_NAMES]
+last_names = last_names[:MAX_NAMES]
 
 # cleaning up the data
 # strip newline characters from lists
 first_names = [name.strip() for name in first_names]
 last_names = [name.strip() for name in last_names]
 
-# clip to 4000 in both lists
-first_names = first_names[:MAX_NAMES]
-last_names = last_names[:MAX_NAMES]
-
-# print lengths of lists
-print("First Names: ", len(first_names))
-print("Last Names: ", len(last_names))
-
+# empty list to store full names
 full_names = []
-# create full names by randomly combining first and last names
 while len(full_names) < MAX_NAMES:
+    # choose random first and last name
     first_name = random.choice(first_names)
     last_name = random.choice(last_names)
 
-    name = first_name + " " + last_name
+    # create full name by combining first and last name with delimiter
+    name = f"{first_name}{NAME_DELIMITER}{last_name}"
 
+    # don't add if duplicate
+    if name in full_names:
+        continue
+
+    # add to list if not duplicate
     full_names.append(name)
 
-# get the longest name and print number of characters
-# key is the function that is used to determine the max, so in our case we want to use the length of the string
+# key is the function that is used to determine the max
+# so in our case we want to use the length of the string
 longest_name = max(full_names, key=len)
 print("Longest Name: ", longest_name)
 print("Length: ", len(longest_name))
 
-# write to fullnames.txt
 with open("fullnames.txt", "w") as f:
-    for name in full_names:
-        f.write(name + "\n")
+    # write each name on a new line
+    f.write("\n".join(full_names))
