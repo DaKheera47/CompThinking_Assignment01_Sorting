@@ -1,61 +1,120 @@
-# a) Create three random arrays with the following sizes: 100, 1,000, and 10,000 elements. These arrays will simulate real-world datasets. Each generated number should have 6 digits ranging from 100,000 to 999,999.
-# b) Implement all three sorting algorithms: Selection Sort, Merge Sort, and QuickSort.
-# c) Apply each sorting algorithm to the three arrays separately. Ensure that you are sorting copies of the original arrays to maintain data integrity.
-
 import time
+import matplotlib.pyplot as plt
+from utils import generateRandomNumber, timeArraySorting
 
-from sorting_algos import merge_sort, quick_sort, selection_sort
-from utils import generateRandomNumber
+# Directory where the charts will be saved
+import os
+
+CHARTS_DIR = "./charts/"
+os.makedirs(CHARTS_DIR, exist_ok=True)
 
 sizes = [100, 1000, 10000]
-allArrays = []
+allArrays = {size: generateRandomNumber(6, size) for size in sizes}
 
-# generate random arrays of sizes in sizes array
-for size in sizes:
-    array = generateRandomNumber(6, size)
-    allArrays.append(array)
+# Dictionaries to store time and comparison data for each algorithm and array size
+time_data = {"selection": [], "merge": [], "quick": []}
+comparisons_data = {"selection": [], "merge": [], "quick": []}
+# time_data = {"merge": [], "quick": []}
+# comparisons_data = {"merge": [], "quick": []}
 
+for size, array in allArrays.items():
+    print(f"Array size: {size}")
 
-def timeArraySorting(array, sortType):
-    # using time.perf_counter() instead of time.time() because it is more accurate
-    # start timer
-    start = time.perf_counter()
-
-    if sortType == "selection":
-        sorted_arr, comparisons = selection_sort(array)
-    elif sortType == "merge":
-        sorted_arr, comparisons = merge_sort(array)
-    elif sortType == "quick":
-        sorted_arr, comparisons = quick_sort(array)
-
-    # end timer
-    end = time.perf_counter()
-    # calculate time taken to sort array
-    timeTaken = end - start
-    # returning time in milliseconds
-    timeTaken = timeTaken * 1000
-
-    return sorted_arr, comparisons, timeTaken
-
-
-for array in allArrays:
-    print(f"Array size: {len(array)}")
-
-    selection_sorted_arr, selection_comparisons, selection_timeTaken = timeArraySorting(
+    # Selection Sort
+    selection_sorted_arr, selection_comparisons, selection_time = timeArraySorting(
         array.copy(), "selection"
     )
-    print(
-        f"Selection Sort took {selection_timeTaken}ms, {selection_comparisons} comparisons"
-    )
+    time_data["selection"].append(selection_time)
+    comparisons_data["selection"].append(selection_comparisons)
+    print(f"Selection Sort: {selection_time}ms, {selection_comparisons} comparisons")
 
-    merge_sorted_arr, merge_comparisons, merge_timeTaken = timeArraySorting(
+    # Merge Sort
+    merge_sorted_arr, merge_comparisons, merge_time = timeArraySorting(
         array.copy(), "merge"
     )
-    print(f"Merge Sort took {merge_timeTaken}ms, {merge_comparisons} comparisons")
+    time_data["merge"].append(merge_time)
+    comparisons_data["merge"].append(merge_comparisons)
+    print(f"Merge Sort: {merge_time}ms, {merge_comparisons} comparisons")
 
-    quick_sorted_arr, quick_comparisons, quick_timeTaken = timeArraySorting(
+    # Quick Sort
+    quick_sorted_arr, quick_comparisons, quick_time = timeArraySorting(
         array.copy(), "quick"
     )
-    print(f"Quick Sort took {quick_timeTaken}ms, {quick_comparisons} comparisons")
+    time_data["quick"].append(quick_time)
+    comparisons_data["quick"].append(quick_comparisons)
+    print(f"Quick Sort: {quick_time}ms, {quick_comparisons} comparisons")
 
     print("\n")
+
+
+def plot_bar(sizes, data, title, ylabel, filename):
+    plt.figure(figsize=(10, 5))
+
+    bar_width = 0.1  # Width of the bars
+    positions = range(len(sizes))  # Bar positions
+
+    for i, (sort_type, values) in enumerate(data.items()):
+        plt.bar(
+            [p + bar_width * i for p in positions],
+            values,
+            width=bar_width,
+            label=f"{sort_type.capitalize()} Sort",
+        )
+
+    plt.title(title)
+    plt.xlabel("Array Size")
+    plt.ylabel(ylabel)
+    plt.xticks([p + bar_width for p in positions], sizes)
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(os.path.join(CHARTS_DIR, filename))
+    plt.close()
+
+
+def plot_line(sizes, data, title, ylabel, filename):
+    plt.figure(figsize=(10, 5))
+    for sort_type, values in data.items():
+        plt.plot(sizes, values, label=f"{sort_type.capitalize()} Sort")
+
+    plt.title(title)
+    plt.xlabel("Array Size")
+    plt.ylabel(ylabel)
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(os.path.join(CHARTS_DIR, filename))
+    plt.close()
+
+
+plot_bar(
+    sizes,
+    time_data,
+    "Sorting Time Comparison",
+    "Time (ms)",
+    "time_comparison_bar.png",
+)
+
+plot_line(
+    sizes, time_data, "Sorting Time Comparison", "Time (ms)", "time_comparison_line.png"
+)
+
+# remove selection sort from comparisons data
+del time_data["selection"]
+
+print("Time Data")
+print(time_data)
+
+plot_bar(
+    sizes,
+    time_data,
+    "Sorting Time Comparison",
+    "Time (ms)",
+    "time_comparison_bar_excluding_selection.png",
+)
+
+plot_line(
+    sizes,
+    time_data,
+    "Sorting Time Comparison",
+    "Time (ms)",
+    "time_comparison_line_excluding_selection.png",
+)
