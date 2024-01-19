@@ -6,6 +6,7 @@ from sorting_algos import merge_sort, quick_sort, selection_sort
 def generateRandomNumber(numDigits, elements):
     # generate a random number with numDigits digits
     # and repeat this process elements times
+
     # return a list of random numbers
     randomNumbers = []
     # 10 ** 3 = 1000
@@ -13,7 +14,7 @@ def generateRandomNumber(numDigits, elements):
     # 10 ** 4 = 10000 - 1 = 9999
     maxNum = (10**numDigits) - 1
 
-    for i in range(elements):
+    for _ in range(elements):
         randomNumber = random.randint(minNum, maxNum)
         randomNumbers.append(randomNumber)
 
@@ -21,7 +22,9 @@ def generateRandomNumber(numDigits, elements):
 
 
 def timeArraySorting(array, sortType):
-    # using time.perf_counter() instead of time.time() because it is more accurate
+    # using time.perf_counter() instead of time.time()
+    # as it is more accurate
+
     # start timer
     start = time.perf_counter()
 
