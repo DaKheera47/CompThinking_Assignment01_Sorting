@@ -1,17 +1,16 @@
-import time
 import matplotlib.pyplot as plt
 from utils import generateRandomNumber, timeArraySorting
-
-# Directory where the charts will be saved
 import os
 
+# Directory where the charts will be saved
 CHARTS_DIR = "./charts/"
 os.makedirs(CHARTS_DIR, exist_ok=True)
 
 sizes = [100, 1000, 10000]
 allArrays = {size: generateRandomNumber(6, size) for size in sizes}
 
-# Dictionaries to store time and comparison data for each algorithm and array size
+# Dictionaries to store time and comparison data
+# for each algorithm and array size
 time_data = {"selection": [], "merge": [], "quick": []}
 comparisons_data = {"selection": [], "merge": [], "quick": []}
 # time_data = {"merge": [], "quick": []}
@@ -98,11 +97,11 @@ plot_line(
 )
 
 # remove selection sort from comparisons data
+# since it is too slow to let the other algorithms be visible
 del time_data["selection"]
 
-print("Time Data")
-print(time_data)
-
+# plot the charts again without selection sort to
+# see the other algorithms better
 plot_bar(
     sizes,
     time_data,

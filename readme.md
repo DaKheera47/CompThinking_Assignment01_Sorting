@@ -18,3 +18,4 @@
 -   [ ] adding an expected line to performance graph based on the number
 -   [ ] adding device information to performance graph (e.g. CPU, RAM, etc.)
 -   [ ] comparisons vs time chart
+-   [ ] scatter plot
