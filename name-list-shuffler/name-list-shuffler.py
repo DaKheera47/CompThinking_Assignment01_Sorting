@@ -8,6 +8,7 @@ MAX_NAMES = 4000
 NAME_DELIMITER = " "
 FIRST_FILE_NAME = "First Names.txt"
 LAST_FILE_NAME = "lastNames.txt"
+OUTPUT_FILENAME = "fullnames.txt"
 
 # loading files into lists
 with open(FIRST_FILE_NAME) as f:
@@ -51,6 +52,6 @@ longest_name = max(full_names, key=len)
 print("Longest Name: ", longest_name)
 print("Length: ", len(longest_name))
 
-with open("fullnames.txt", "w") as f:
+with open(OUTPUT_FILENAME, "w") as f:
     # write each name on a new line
     f.write("\n".join(full_names))
