@@ -3,7 +3,7 @@ import time
 from sorting_algos import merge_sort, quick_sort, selection_sort
 
 
-def generateRandomNumber(numDigits, elements):
+def generate_random_number(numDigits, elements):
     # generate a random number with numDigits digits
     # and repeat this process elements times
 
@@ -21,7 +21,7 @@ def generateRandomNumber(numDigits, elements):
     return randomNumbers
 
 
-def timeArraySorting(array, sortType):
+def time_array_sort(array, sortType):
     # using time.perf_counter() instead of time.time()
     # as it is more accurate
 
