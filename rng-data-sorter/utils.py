@@ -1,3 +1,6 @@
+# Author: Shaheer Sarfaraz, G21011528
+# Year 2, Computational Thinking, 11/2023
+
 import random
 import time
 from sorting_algos import merge_sort, quick_sort, selection_sort

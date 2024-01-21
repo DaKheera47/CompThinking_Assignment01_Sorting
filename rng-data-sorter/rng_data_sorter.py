@@ -1,3 +1,6 @@
+# Author: Shaheer Sarfaraz, G21011528
+# Year 2, Computational Thinking, 11/2023
+
 import matplotlib.pyplot as plt
 from utils import generate_random_number, time_array_sort
 import os

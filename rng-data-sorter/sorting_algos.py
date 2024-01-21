@@ -1,3 +1,6 @@
+# Author: Shaheer Sarfaraz, G21011528
+# Year 2, Computational Thinking, 11/2023
+
 def selection_sort(arr):
     # Initialize the number of comparisons
     comparisons = 0
